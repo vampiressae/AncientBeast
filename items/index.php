@@ -16,6 +16,7 @@ require_once("../config.php");
 echo $start_div;
 require_once("filters.php");
 ?>
+<script type="text/javascript" src="filters.js"></script>
 <script type="text/javascript" src="<?php echo $WorkingDir; ?>utils/tinybox.js"></script>
 <!--show details of the linked item-->
 <script type="text/javascript">
@@ -43,12 +44,28 @@ $result = mysql_query($items) or die(mysql_error());
 echo
 "<table width=100%>
 <tr>";
+
 $i = 0;
+
+$stats = array('health', 'regrowth', 'fatigue', 'energy', 'meditation', 'delay', 'offense', 'defense', 'movement');
+$masteries = array('pierce', 'slash', 'crush', 'shock', 'burn', 'frost', 'poison', 'mental', 'sonic');
 while ($row = mysql_fetch_assoc($result)) {
 	$i++;
-	echo "
-<td class=\"item\">
-	<span style=\"cursor: pointer;\" class=\"lighten\" onclick=\"showId({$row['id']});\">
+	$itemClasses = "";
+	foreach ($stats as $x) {
+    	if ($row[$x] != NULL) {
+    	    $itemClasses .= $x;
+    	}
+	}
+	foreach ($masteries as $x) {
+    	if ($row[$x] != NULL) {
+    	    $itemClasses .= "has".$x;
+    	}
+	}
+	
+echo 
+"<td class=\"item\">
+	<span style=\"cursor: pointer;\" class=\"lighten {$itemClasses}\" onclick=\"showId({$row['id']});\">
 	<img class=\"smaller\" src=\"{$WorkingDir}items/{$row['name']}.png\" style=\"display: block;\">
 	<br>
 	{$row['name']}
