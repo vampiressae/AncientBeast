@@ -2,11 +2,9 @@ function Arena() {
 	this.tiles = new Array();
 	this.tilesRenderer = null;
 	this.arenaRenderer = null;
-	this.rows = 12;
-	this.columns = 18;
 	this.activeTile = -1;
 	this.mouse = new Vector2D();
-	this.tileMap = new TileMap();
+	this.tileMap = new TileMap(16, 10);
 	this.selectedCreature = null;
 }
 
@@ -15,23 +13,23 @@ Arena.prototype = new Drawable();
 Arena.prototype.init = function() {
 	var _this = this;
 	// Generate Renderers
-	this.tilesRenderer = new CanvasRenderer($("#tiles")[0]);
-	this.arenaRenderer = new CanvasRenderer($("#arena")[0]);
+	this.tilesRenderer = new CanvasRenderer($("#tiles")[0], 17);
+	this.arenaRenderer = new CanvasRenderer($("#arena")[0], 17);
 	this.tilesRenderer.resizeToWindow();
 	this.arenaRenderer.resizeToWindow();
-	
+
 	//TODO create loading Screen
-    _this.testCreature = new Creature(_this.tileMap.getTileAtIndex(23), _this.tilesRenderer);
-	this.testCreature.loadJson("creatures/magmaSpawn.json", this.tilesRenderer, function() {
+    _this.testCreature = new Creature(this.tileMap.getTileAtIndex2D(new Vector2D(10, 2)), _this.tilesRenderer);
+	this.testCreature.loadJson("../bestiary/Magma Spawn/animation.json", this.tilesRenderer, function() {
     	window.requestAnimFrame(function () {
 		    _this.drawAll(_this.drawTiles, _this.tilesRenderer.canvas);
 	    }, _this.tilesRenderer.canvas);
 	});
 	    
 	this.arenaRenderer.fetchTexture("../locations/forest/bg.jpg", function() {
-    	_this.drawBackground();
+		_this.drawBackground();
 	}); 
-	
+
 	// resize events
 	$(window).resize(function () {
 		clearTimeout(_this.windowResizeTimeout);
@@ -39,28 +37,38 @@ Arena.prototype.init = function() {
 			_this.onResize(); 
 		}, 100);
 	});
-	
+
 	// Mouse events
 	$(window).on("click", function(e) {
 		_this.mouse = new Vector2D(e.offsetX, e.offsetY);
 		_this.mouse = _this.mouse.toUnitSpace(_this.tilesRenderer);
 		console.log(_this.mouse);
 		if (_this.tileMap.activeTile != null) {
-		    if (_this.selectedCreature == null) {
-        		_this.selectedCreature = _this.tileMap.activeTile.creature;
-    		} else {
-    		    _this.selectedCreature.setAtTile(_this.tileMap.activeTile);
-    		}
+			if (_this.selectedCreature == null) {
+				_this.selectedCreature = _this.tileMap.activeTile.creature;
+			} else {
+				_this.selectedCreature.setAtTile(_this.tileMap.activeTile);
+			}
 		} 
 	})
-	
+
 	$(window).on("mousemove", function(e){
-    	_this.mouse = new Vector2D(e.pageX - $(_this.tilesRenderer.canvas).offset().left,
-	                               e.pageY - $(_this.tilesRenderer.canvas).offset().top);
+		_this.mouse = new Vector2D(e.pageX - $(_this.tilesRenderer.canvas).offset().left,
+								   e.pageY - $(_this.tilesRenderer.canvas).offset().top);
 		_this.mouse = _this.mouse.toUnitSpace(_this.tilesRenderer);
 		_this.tileMap.onMouseMove(_this.tilesRenderer, _this.mouse);
 	});
+	/*
+<<<<<<< HEAD
   
+=======
+
+	window.requestAnimFrame(function () {
+		_this.drawAll(_this.drawTiles, _this.tilesRenderer.canvas);
+	}, _this.tilesRenderer.canvas);
+
+>>>>>>> 35cb4ec8c7126b769fe1614ce82ff161b895f355
+*/
 	return true;
 }
 
@@ -73,7 +81,7 @@ Arena.prototype.onResize = function() {
 
 Arena.prototype.drawAll = function(f, element) {
 	var _this = this;
-	
+
 	f.call(this);
 	window.requestAnimFrame(function () {
 		_this.drawAll(f);
@@ -94,5 +102,5 @@ Arena.prototype.drawTiles = function() {
 }
 
 Arena.prototype.draw = function() {
-	
+
 }

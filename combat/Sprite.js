@@ -12,6 +12,6 @@ Sprite.prototype = new Drawable();
 Sprite.prototype.constructor = Sprite;
 
 Sprite.prototype.draw = function(renderer) {
-    renderer.bindTexture("creatures/Magma-Spawn-carboard.png");
+    renderer.bindTexture(this.image);
     renderer.drawImage(this.position, this.size, this.texturePosition, this.textureSize);
 }

@@ -1,8 +1,8 @@
 {
     "name": "Magma Spawn",
-    "image": "../bestiary/Magma\\ Spawn/cardboard.png",
-    "footCenter": [210, 420],
-    "frameSize": [600,460],
+    "image": "../bestiary/Magma Spawn/cardboard.png",
+    "footCenter": [0.25, 0.7],
+    "frameSize": [275,211],
     "collision": [
         [0,1,1],
          [1,1,1]
