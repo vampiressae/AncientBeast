@@ -8,6 +8,7 @@ function Tile(shape, color) {
     this.terrain = 1; // TODO create Enum 0:default 1:walkable 2:blocked.
     this.terrainType = 0; // Elemental type, water, lava, aso
     this.lineWidth = 0.04;
+    this.tileMap = null;
 }
 
 Tile.prototype = new Drawable();
