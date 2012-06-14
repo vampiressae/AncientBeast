@@ -36,7 +36,11 @@ Vector2D.prototype = {
 	},
 	toUnitSpace: function(renderer) {
 		return new Vector2D(renderer.unitSpace(this.x), renderer.unitSpace(this.y));
-	},
+	}
+}
+// static
+Vector2D.restoreFromJson = function(data) {
+    return data ? new Vector2D(data[0], data[1]) : null;
 }
 
 

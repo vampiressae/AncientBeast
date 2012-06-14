@@ -10,6 +10,8 @@ function Arena() {
 	this.selectedCreature = null;
 }
 
+Arena.prototype = new Drawable();
+
 Arena.prototype.init = function() {
 	var _this = this;
 	// Generate Renderers
@@ -18,9 +20,14 @@ Arena.prototype.init = function() {
 	this.tilesRenderer.resizeToWindow();
 	this.arenaRenderer.resizeToWindow();
 	
-    this.testCreature = new Creature(this.tileMap.getTileAtIndex(23), this.tilesRenderer);
+	//TODO create loading Screen
+    _this.testCreature = new Creature(_this.tileMap.getTileAtIndex(23), _this.tilesRenderer);
+	this.testCreature.loadJson("creatures/magmaSpawn.json", this.tilesRenderer, function() {
+    	window.requestAnimFrame(function () {
+		    _this.drawAll(_this.drawTiles, _this.tilesRenderer.canvas);
+	    }, _this.tilesRenderer.canvas);
+	});
 	    
-	// TODO use callback to do a loading screen
 	this.arenaRenderer.fetchTexture("../locations/forest/bg.jpg", function() {
     	_this.drawBackground();
 	}); 
@@ -54,10 +61,6 @@ Arena.prototype.init = function() {
 		_this.tileMap.onMouseMove(_this.tilesRenderer, _this.mouse);
 	});
   
-	window.requestAnimFrame(function () {
-		_this.drawAll(_this.drawTiles, _this.tilesRenderer.canvas);
-	}, _this.tilesRenderer.canvas);
-	
 	return true;
 }
 
